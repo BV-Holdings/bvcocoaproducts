@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum QuoteStatus {
+  NEW
+  IN_REVIEW
+  RESPONDED
+  CLOSED
+}
+
+model QuoteRequest {
+  id               String      @id @default(cuid())
+  createdAt        DateTime    @default(now())
+  companyName      String
+  contactName      String
+  email            String
+  country          String
+  product          String
+  industry         String
+  estimatedVolume  String
+  message          String?
+  status           QuoteStatus @default(NEW)
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+  confirmed Boolean  @default(false)
+  source    String?
+}
+
+model Product {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String
+  description    String
+  specifications Json
+  hsCode         String
+  available      Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Industry {
+  id            String @id @default(cuid())
+  slug          String @unique
+  name          String
+  description   String
+  useCaseDetail String
+  icon          String?
+  order         Int
+}

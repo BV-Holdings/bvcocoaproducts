@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-cocoa-brown: #3d2b1f;
+  --color-terracotta: #b5651d;
+  --color-amber: #d4a24c;
+  --color-sustainable-green: #4a7856;
+  --color-warm-cream: #faf6f0;
+  --color-soft-sand: #ede4d8;
+  --color-charcoal: #2a1f18;
+  --radius-brand: 8px;
+}
+
+body {
+  background-color: var(--color-warm-cream);
+  color: var(--color-charcoal);
+}
