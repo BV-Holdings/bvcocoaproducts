@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/ui/Button";
 
 // TODO: replace with Stitch design — Newsletter signup form
 const newsletterSchema = z.object({
@@ -50,21 +49,25 @@ export function NewsletterSignupForm({ source }: NewsletterSignupFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 sm:flex-row">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex gap-md">
       <div className="flex-1">
         <input
           type="email"
-          placeholder="you@company.com"
-          className="w-full rounded-brand border border-softSand px-4 py-2"
+          placeholder="Your corporate email"
+          className="w-full rounded-lg border border-charcoal/20 bg-warmCream px-md py-sm text-body-md text-charcoal outline-none transition-colors focus:border-transparent focus:ring-2 focus:ring-terracotta"
           {...register("email")}
         />
-        {errors.email && <p className="mt-1 text-sm text-terracotta">{errors.email.message}</p>}
+        {errors.email && <p className="mt-1 text-label-sm text-terracotta">{errors.email.message}</p>}
+        {status === "success" && <p className="mt-1 text-label-sm text-sustainableGreen">Subscribed successfully.</p>}
+        {status === "error" && <p className="mt-1 text-label-sm text-terracotta">Something went wrong. Try again.</p>}
       </div>
-      <Button type="submit" disabled={isSubmitting}>
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="rounded-lg bg-cocoaBrown px-lg py-sm text-label-sm font-label-sm text-warmCream transition-colors hover:bg-terracotta disabled:opacity-60"
+      >
         {isSubmitting ? "Submitting..." : "Subscribe"}
-      </Button>
-      {status === "success" && <p className="text-sm text-sustainableGreen">Subscribed successfully.</p>}
-      {status === "error" && <p className="text-sm text-terracotta">Something went wrong. Try again.</p>}
+      </button>
     </form>
   );
 }

@@ -1,10 +1,22 @@
-// TODO: replace with Stitch design — Sustainability page
+import type { Metadata } from "next";
+import { SustainabilityHero } from "@/components/sections/SustainabilityHero";
+import { EUDRCompliance } from "@/components/sections/EUDRCompliance";
+import { TraceabilityProcess } from "@/components/sections/TraceabilityProcess";
+import { CircularEconomyBand } from "@/components/sections/CircularEconomyBand";
+import { CertificationsGrid } from "@/components/sections/CertificationsGrid";
+
+export const metadata: Metadata = {
+  title: "Sustainability & Traceability | BV Holdings",
+};
+
 export default function SustainabilityPage() {
   return (
-    <div className="border border-dashed border-sustainableGreen bg-softSand p-12">
-      <p className="font-mono text-xs uppercase tracking-wide text-sustainableGreen">
-        Sustainability page placeholder
-      </p>
+    <div>
+      <SustainabilityHero />
+      <EUDRCompliance />
+      <TraceabilityProcess />
+      <CircularEconomyBand />
+      <CertificationsGrid />
     </div>
   );
 }

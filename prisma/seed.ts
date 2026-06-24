@@ -7,12 +7,14 @@ const products = [
     slug: "cocoa-shells",
     name: "Cocoa Shells",
     description:
-      "Premium dried cocoa shells, byproduct of cocoa bean processing, suitable for animal feed, mulch, and biomass applications.",
+      "A versatile, nutrient-rich byproduct sourced from premium Cameroonian cocoa beans. Ideal for mulch, animal feed, and biomass energy.",
     specifications: {
-      moisture: "< 10%",
-      particleSize: "5-20mm",
-      moq: "1 x 20ft container",
-      hsCode: "1802",
+      moisture: "8.0% - 12.0% (Max)",
+      particleSize: "Flakes (2mm - 15mm)",
+      packaging: "25kg PP Bags / 500kg Jumbo Bags",
+      moq: "1 Full Container Load (FCL - 20ft)",
+      hsCode: "1802.00",
+      origin: "Cameroon (Littoral & South-West Regions)",
     },
     hsCode: "1802",
     available: true,
@@ -33,12 +35,15 @@ const products = [
   {
     slug: "cocoa-husk-mulch",
     name: "Cocoa Husk Mulch",
-    description: "Processed cocoa husk mulch for horticulture and landscaping use. Coming soon.",
+    description:
+      "Premium cocoa husk mulch for horticulture and landscaping — a natural weed suppressant and slow-release soil conditioner. Coming soon.",
     specifications: {
       moisture: "< 12%",
       particleSize: "10-30mm",
-      moq: "TBD",
-      hsCode: "1802",
+      packaging: "20kg Bags / Bulk Tote",
+      moq: "1 x 40ft Container",
+      hsCode: "1802.00",
+      origin: "Cameroon (Littoral & South-West Regions)",
     },
     hsCode: "1802",
     available: false,
@@ -52,6 +57,7 @@ const industries = [
     description: "Cocoa shells as a fiber-rich additive in livestock and poultry feed formulations.",
     useCaseDetail:
       "Cocoa shells are used by feed manufacturers as a cost-effective fiber source in ruminant and poultry feed blends.",
+    icon: "PawPrint",
     order: 1,
   },
   {
@@ -60,6 +66,7 @@ const industries = [
     description: "Natural, weed-suppressing mulch for gardens, nurseries, and landscaping.",
     useCaseDetail:
       "Cocoa shell mulch improves soil moisture retention and suppresses weeds while breaking down into nutrient-rich compost.",
+    icon: "Sprout",
     order: 2,
   },
   {
@@ -68,6 +75,7 @@ const industries = [
     description: "Cocoa byproducts processed into ingredients for food and beverage manufacturing.",
     useCaseDetail:
       "Cocoa shell extracts and flour are used as flavoring agents and functional ingredients in food production.",
+    icon: "UtensilsCrossed",
     order: 3,
   },
   {
@@ -76,6 +84,7 @@ const industries = [
     description: "Cocoa byproduct extracts used in skincare formulations for their antioxidant properties.",
     useCaseDetail:
       "Cosmetics manufacturers use cocoa shell extracts for exfoliants and antioxidant-rich skincare formulations.",
+    icon: "Sparkles",
     order: 4,
   },
   {
@@ -84,6 +93,7 @@ const industries = [
     description: "Cocoa shells as a renewable biomass fuel source for energy generation.",
     useCaseDetail:
       "Dried cocoa shells serve as a renewable solid fuel alternative for biomass boilers and energy plants.",
+    icon: "Flame",
     order: 5,
   },
   {
@@ -92,6 +102,7 @@ const industries = [
     description: "Cocoa fiber byproducts used in the development of biodegradable packaging materials.",
     useCaseDetail:
       "Cocoa husk fiber is being explored as a raw material input for biodegradable and compostable packaging.",
+    icon: "Recycle",
     order: 6,
   },
 ];

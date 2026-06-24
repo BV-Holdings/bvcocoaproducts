@@ -21,6 +21,7 @@ model QuoteRequest {
   companyName      String
   contactName      String
   email            String
+  phone            String?
   country          String
   product          String
   industry         String

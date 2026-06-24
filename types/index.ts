@@ -2,6 +2,7 @@ export interface QuoteFormData {
   companyName: string;
   contactName: string;
   email: string;
+  phone?: string;
   country: string;
   product: string;
   industry: string;

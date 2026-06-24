@@ -1,6 +1,9 @@
-import Link from "next/link";
+"use client";
 
-// TODO: replace with Stitch design — Navigation (header nav links)
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+
 export interface NavLink {
   label: string;
   href: string;
@@ -8,26 +11,43 @@ export interface NavLink {
 
 export interface NavigationProps {
   links?: NavLink[];
+  className?: string;
+  linkClassName?: string;
+  onLinkClick?: () => void;
 }
 
 const defaultLinks: NavLink[] = [
-  { label: "About", href: "/about" },
+  { label: "Our Origin", href: "/about" },
   { label: "Products", href: "/products" },
   { label: "Industries", href: "/industries" },
   { label: "Sustainability", href: "/sustainability" },
-  { label: "Quality", href: "/quality" },
-  { label: "Buyers", href: "/buyers" },
   { label: "Contact", href: "/contact" },
 ];
 
-export function Navigation({ links = defaultLinks }: NavigationProps) {
+export function Navigation({ links = defaultLinks, className, linkClassName, onLinkClick }: NavigationProps) {
+  const pathname = usePathname();
+
   return (
-    <nav className="flex gap-6">
-      {links.map((link) => (
-        <Link key={link.href} href={link.href} className="text-sm text-charcoal hover:text-terracotta">
-          {link.label}
-        </Link>
-      ))}
+    <nav className={cn("flex items-center gap-lg", className)}>
+      {links.map((link) => {
+        const isActive = pathname === link.href;
+        return (
+          <Link
+            key={link.href}
+            href={link.href}
+            onClick={onLinkClick}
+            className={cn(
+              "label-sm text-label-sm font-label-sm transition-colors duration-200",
+              isActive
+                ? "border-b-2 border-terracotta pb-1 font-bold text-terracotta"
+                : "nav-underline-expand text-charcoal/70 hover:text-terracotta",
+              linkClassName,
+            )}
+          >
+            {link.label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }
