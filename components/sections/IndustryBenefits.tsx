@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Coins, Droplets, HeartPulse, Leaf, Sprout, Wheat, type LucideIcon } from "lucide-react";
+import { Coins, Droplets, HeartPulse, Leaf, Sparkles, Sprout, TrendingUp, Truck, Wheat, Zap, type LucideIcon } from "lucide-react";
 
 export interface IndustryBenefit {
   icon: string;
@@ -16,7 +16,18 @@ export interface IndustryBenefitsProps {
   anchorId?: string;
 }
 
-const iconMap: Record<string, LucideIcon> = { Leaf, Droplets, Sprout, Wheat, Coins, HeartPulse };
+const iconMap: Record<string, LucideIcon> = {
+  Leaf,
+  Droplets,
+  Sprout,
+  Wheat,
+  Coins,
+  HeartPulse,
+  Zap,
+  Sparkles,
+  TrendingUp,
+  Truck,
+};
 
 export function IndustryBenefits({
   heading = "The Science Behind the Byproduct",

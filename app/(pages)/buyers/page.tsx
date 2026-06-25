@@ -1,13 +1,20 @@
-import { QuoteRequestForm } from "@/components/forms/QuoteRequestForm";
+import type { Metadata } from "next";
+import { LogisticsHero } from "@/components/sections/LogisticsHero";
+import { NetworkMapPanel } from "@/components/sections/NetworkMapPanel";
+import { SupplyChainTimeline } from "@/components/sections/SupplyChainTimeline";
+import { PortDocumentationBento } from "@/components/sections/PortDocumentationBento";
 
-// TODO: replace with Stitch design — Buyers page
+export const metadata: Metadata = {
+  title: "BV Holdings | Global Logistics & Tracking",
+};
+
 export default function BuyersPage() {
   return (
-    <div className="border border-dashed border-terracotta bg-softSand p-12">
-      <p className="font-mono text-xs uppercase tracking-wide text-terracotta">Buyers page placeholder</p>
-      <div className="mt-6">
-        <QuoteRequestForm />
-      </div>
+    <div>
+      <LogisticsHero />
+      <NetworkMapPanel />
+      <SupplyChainTimeline />
+      <PortDocumentationBento />
     </div>
   );
 }

@@ -68,6 +68,34 @@ const productContent: Record<string, ProductContentEntry> = {
     primaryCta: { label: "Request Updates", href: "/contact" },
     secondaryCta: { label: "View Logistics", href: "/buyers" },
   },
+  "cocoa-meal-pellets": {
+    heroImageUrl:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuB-dJfYT5ggEw3ugJ4qmNBfjzVA7RNOOYWLhA2clx22wULgkdL5t00ZCAoW6PM4J0HlL9QBAl-8uZkkKVO6pAde68_RG-XiqRb6hyhwvt20vvUpKSp6oOzo-UWU3a-HX1n7xQDtgtLmzen5ohKySUSo4x4T1rXkIvYnGxkyAuMr_0ZFU_vfB1XCIu1A1af0QWecfbcI1M-aXs033AbzjpL9AQI60r4S1OMUrx3C3rJmk8R163_YBkAJQy6j2RQKjkbUp8YNzpRvU6A",
+    applications: [
+      {
+        icon: "Zap",
+        title: "Biomass Energy",
+        description: "Compacted pellets optimized for high-efficiency thermal combustion in industrial boiler systems.",
+        emphasized: true,
+      },
+    ],
+    primaryCta: { label: "Request Updates", href: "/contact" },
+    secondaryCta: { label: "View Logistics", href: "/buyers" },
+  },
+  "cocoa-micronized-powder": {
+    heroImageUrl:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAbPVvYpxNKsJL2b1KEshWxX9CB3bujGfkbzfKtI8wFFCmr7cyuqXRk9e93qgjnkJbLIJFZqAS24v3mpycYNmgpCz6pPCqMaa9IN0vT5sUp1ThMz1FNCnDbvaM28v1279s-fLKqg_XWr4OYPPkkBgOUAJdnIzKLHy6bILJplrjOlMv8UiGGA19g0yRgQB1O917CxD9a4TaGqtx7FbRjzW2LzEcNE5gQEsjQ93m5ksWZcBm-czvLiu2qa_nBdxJl4dm6KpUIR_gtB_c",
+    applications: [
+      {
+        icon: "Sparkles",
+        title: "Cosmetics & Skincare",
+        description: "High-potency micronized powder engineered for premium cosmetic and specialty formulations.",
+        emphasized: true,
+      },
+    ],
+    primaryCta: { label: "Request Updates", href: "/contact" },
+    secondaryCta: { label: "View Logistics", href: "/buyers" },
+  },
 };
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {

@@ -24,6 +24,9 @@ const specLabels: Record<string, string> = {
   moq: "MOQ",
   hsCode: "HS Code",
   origin: "Origin",
+  calorificValue: "Calorific Value",
+  ashContent: "Ash Content",
+  bulkDensity: "Bulk Density",
 };
 
 // TODO: wire up real document URLs (e.g. Supabase Storage) once spec sheets/COAs are available.

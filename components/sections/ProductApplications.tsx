@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Droplets, Leaf, PawPrint, Sprout, Zap, type LucideIcon } from "lucide-react";
+import { Droplets, Leaf, PawPrint, Sparkles, Sprout, Zap, type LucideIcon } from "lucide-react";
 
 export interface ProductApplication {
   icon: string;
@@ -20,6 +20,7 @@ const iconMap: Record<string, LucideIcon> = {
   PawPrint,
   Zap,
   Droplets,
+  Sparkles,
 };
 
 export function ProductApplications({ heading = "Versatile Applications", applications }: ProductApplicationsProps) {

@@ -50,3 +50,7 @@ body {
 .nav-underline-expand:hover::after {
   width: 100%;
 }
+
+.timeline-line {
+  background: linear-gradient(90deg, var(--color-terracotta) 0%, var(--color-soft-sand) 100%);
+}
