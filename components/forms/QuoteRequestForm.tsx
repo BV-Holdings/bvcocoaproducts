@@ -23,7 +23,26 @@ const quoteRequestSchema = z.object({
 
 type QuoteRequestValues = z.infer<typeof quoteRequestSchema>;
 
-const productOptions = ["Cocoa Shells", "Cocoa Shell Flour", "Cocoa Husk Mulch"];
+export interface QuoteProductOption {
+  name: string;
+  selectable: boolean;
+}
+
+export interface QuoteRequestFormProps {
+  products?: QuoteProductOption[];
+}
+
+// Quote requests are currently only accepted for these products, regardless of catalog availability.
+const SELECTABLE_PRODUCTS = ["Cocoa Shells", "Cocoa Husk Mulch"];
+
+const defaultProductOptions: QuoteProductOption[] = [
+  "Cocoa Shells",
+  "Cocoa Shell Flour",
+  "Cocoa Husk Mulch",
+  "Cocoa Meal & Pellets",
+  "Cocoa Shell Micronized Powder",
+].map((name) => ({ name, selectable: SELECTABLE_PRODUCTS.includes(name) }));
+
 const industryOptions = [
   "Animal Feed",
   "Horticulture & Mulch",
@@ -37,7 +56,7 @@ const inputClass =
   "rounded-lg border border-charcoal/20 bg-warmCream p-sm text-body-md text-charcoal outline-none transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-terracotta";
 const labelClass = "text-label-sm font-label-sm uppercase tracking-wider text-cocoaBrown";
 
-export function QuoteRequestForm() {
+export function QuoteRequestForm({ products = defaultProductOptions }: QuoteRequestFormProps) {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
   const {
@@ -76,9 +95,10 @@ export function QuoteRequestForm() {
           <label className={labelClass}>Product Interest</label>
           <select className={inputClass} {...register("product")}>
             <option value="">Select a product</option>
-            {productOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
+            {products.map((option) => (
+              <option key={option.name} value={option.name} disabled={!option.selectable}>
+                {option.name}
+                {!option.selectable ? " (Coming Soon)" : ""}
               </option>
             ))}
           </select>

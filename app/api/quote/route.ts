@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { createBrevoTransport } from "@/lib/email";
+import { sendTransactionalEmail } from "@/lib/brevo";
+import { quoteConfirmationHTML, QUOTE_CONFIRMATION_SUBJECT } from "@/lib/emailTemplates";
 
 const quoteRequestSchema = z.object({
   companyName: z.string().min(1, "Company name is required"),
@@ -38,27 +39,71 @@ export async function POST(request: Request) {
   try {
     const quoteRequest = await prisma.quoteRequest.create({ data });
 
+    const quoteTemplateId = process.env.BREVO_QUOTE_TEMPLATE_ID
+      ? Number(process.env.BREVO_QUOTE_TEMPLATE_ID)
+      : undefined;
+    const internalTemplateId = process.env.BREVO_INTERNAL_QUOTE_TEMPLATE_ID
+      ? Number(process.env.BREVO_INTERNAL_QUOTE_TEMPLATE_ID)
+      : undefined;
+
+    // Email 1: confirmation to the buyer.
     try {
-      const transport = createBrevoTransport();
-      await transport.sendMail({
-        from: process.env.BREVO_FROM_EMAIL,
-        to: process.env.CONTACT_RECIPIENT_EMAIL,
-        replyTo: data.email,
-        subject: `New Quote Request — ${data.companyName}`,
-        text: [
-          `Company: ${data.companyName}`,
-          `Contact: ${data.contactName}`,
-          `Email: ${data.email}`,
-          `Phone: ${data.phone ?? "—"}`,
-          `Country: ${data.country}`,
-          `Product: ${data.product}`,
-          `Industry: ${data.industry}`,
-          `Estimated Volume: ${data.estimatedVolume}`,
-          `Message: ${data.message ?? "—"}`,
-        ].join("\n"),
+      await sendTransactionalEmail({
+        to: { email: data.email, name: data.contactName },
+        templateId: quoteTemplateId,
+        params: {
+          CONTACT_NAME: data.contactName,
+          COMPANY_NAME: data.companyName,
+          PRODUCT: data.product,
+          INDUSTRY: data.industry,
+          VOLUME: data.estimatedVolume,
+          COUNTRY: data.country,
+        },
+        ...(quoteTemplateId
+          ? {}
+          : {
+              subject: QUOTE_CONFIRMATION_SUBJECT,
+              htmlContent: quoteConfirmationHTML({
+                contactName: data.contactName,
+                companyName: data.companyName,
+                product: data.product,
+                volume: data.estimatedVolume,
+              }),
+            }),
       });
     } catch (emailError) {
-      console.error("Failed to send quote notification email", emailError);
+      console.error("Failed to send quote confirmation email", emailError);
+    }
+
+    // Email 2: internal notification to the trade desk.
+    try {
+      const recipientEmail = process.env.CONTACT_RECIPIENT_EMAIL;
+      if (recipientEmail) {
+        await sendTransactionalEmail({
+          to: { email: recipientEmail },
+          templateId: internalTemplateId,
+          params: {
+            CONTACT_NAME: data.contactName,
+            COMPANY_NAME: data.companyName,
+            EMAIL: data.email,
+            PRODUCT: data.product,
+            INDUSTRY: data.industry,
+            VOLUME: data.estimatedVolume,
+            COUNTRY: data.country,
+            MESSAGE: data.message || "No message provided",
+          },
+          ...(internalTemplateId
+            ? {}
+            : {
+                subject: `New Quote Request — ${data.companyName}`,
+                htmlContent: `<p>New quote request from <strong>${data.contactName}</strong> at <strong>${data.companyName}</strong> (${data.email}).</p>
+<p>Product: ${data.product}<br/>Industry: ${data.industry}<br/>Volume: ${data.estimatedVolume}<br/>Country: ${data.country}</p>
+<p>Message: ${data.message || "No message provided"}</p>`,
+              }),
+        });
+      }
+    } catch (emailError) {
+      console.error("Failed to send internal quote notification email", emailError);
     }
 
     return NextResponse.json({ success: true, id: quoteRequest.id }, { status: 200 });

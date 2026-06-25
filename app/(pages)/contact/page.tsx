@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
-import { QuoteRequestForm } from "@/components/forms/QuoteRequestForm";
+import { prisma } from "@/lib/prisma";
+import { QuoteRequestForm, type QuoteProductOption } from "@/components/forms/QuoteRequestForm";
 import { WhatHappensNext } from "@/components/sections/WhatHappensNext";
 import { TradeDeskCard } from "@/components/sections/TradeDeskCard";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Request a Quote | BV Holdings",
@@ -11,7 +14,16 @@ export const metadata: Metadata = {
 const SIDEBAR_IMAGE =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuB9Ng1zEddj-WJC-klDLJUu4kNtwiqCgZEZwaukFaUEPgsgsBrWdHAvdTDjrgZuRFGB8lz-c6fdkjYxH2a2EHIoqqHxjnPTLtcOSRlBPYYtQkUoVG6VgmBIhDcf_SWVrExB-RL1wSjiM7Auy34AEisDw-oxe1HT6Rdard-i8QUQjObpKKH9OODVSzh6Xr2gTLp9pBdFhfBFTgeiQvGp5wK7RBFpaQBd2tqOyPKzxOe_752gLTCIV_suxFNeZtfIa-BHMTDwhQDdTYo";
 
-export default function ContactPage() {
+// Quote requests are currently only accepted for these products, regardless of catalog availability.
+const SELECTABLE_PRODUCTS = ["Cocoa Shells", "Cocoa Husk Mulch"];
+
+export default async function ContactPage() {
+  const products = await prisma.product.findMany({ orderBy: { name: "asc" } });
+  const productOptions: QuoteProductOption[] = products.map((product) => ({
+    name: product.name,
+    selectable: SELECTABLE_PRODUCTS.includes(product.name),
+  }));
+
   return (
     <main className="mx-auto max-w-container-max px-gutter py-xl">
       <section className="mb-xl text-center md:text-left">
@@ -26,7 +38,7 @@ export default function ContactPage() {
         <div className="relative overflow-hidden rounded-xl border border-charcoal/10 bg-softSand p-md shadow-sm md:p-xl lg:col-span-8">
           <div className="fiber-texture absolute inset-0" />
           <div className="relative z-10">
-            <QuoteRequestForm />
+            <QuoteRequestForm products={productOptions} />
           </div>
         </div>
 

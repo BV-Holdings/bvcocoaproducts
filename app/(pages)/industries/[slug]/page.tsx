@@ -6,6 +6,7 @@ import { IndustryBenefits, type IndustryBenefit } from "@/components/sections/In
 import { IndustryShowcase, type IndustryShowcaseSpecCard, type IndustryShowcaseHighlight } from "@/components/sections/IndustryShowcase";
 import { IndustryProductSpecs, type ProductSpecRow } from "@/components/sections/IndustryProductSpecs";
 import { IndustryProductTable } from "@/components/sections/IndustryProductTable";
+import { IndustryProductBento, type ProductBentoStatCard } from "@/components/sections/IndustryProductBento";
 import { IndustryLogisticsBand, type LogisticsBadge } from "@/components/sections/IndustryLogisticsBand";
 import { SustainabilityCallout } from "@/components/sections/SustainabilityCallout";
 import { SupplyCTACard } from "@/components/sections/SupplyCTACard";
@@ -50,6 +51,13 @@ interface IndustryContentEntry {
     imageUrl: string;
     imageAlt: string;
     specKeys: { key: string; label: string }[];
+  };
+  productBento?: {
+    imageUrl: string;
+    imageAlt: string;
+    availableBadgeLabel?: string;
+    checklist: string[];
+    statCards: ProductBentoStatCard[];
   };
   complianceProcess?: {
     heading?: string;
@@ -106,6 +114,27 @@ const industryContent: Record<string, IndustryContentEntry> = {
       },
     ],
     relatedProductSlug: "cocoa-husk-mulch",
+    productBento: {
+      imageUrl:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCal6WY7ZJtMQpQ5f5cx8G5F_d8yElCFket758w6z0PqtLZOV3Uqrn_qRfqhl4G-Tr60G-23wATmGx4wNMYl-G1K17nwbaoUkgEKF1Wbl9Z65ywoi54w6-iBMfHDuD1Drfxy3xhOuvp_lzqMD1Onyvzfyz_-SZqX32Kyt1rNerivQ5_PXQdcYXpOCdZMTYuWvOxuQ3VUUhmGr00KMn2mQKzr3RjMhApOO2KWRdkMzuymgQ_5R0lI3X8rHIS-W05RvsaVUJamGB5O-U",
+      imageAlt: "Premium cocoa shell mulch close-up texture",
+      availableBadgeLabel: "Industrial Grade B+",
+      checklist: ["100% Organic & Biodegradable", "Natural Chocolate Aroma", "pH Neutral Soil Balancing"],
+      statCards: [
+        {
+          heading: "Supply Logistics",
+          value: "40ft Container",
+          description: "Minimum order quantity for international export. Bulk-bagged or loose-fill options available.",
+          tone: "dark",
+        },
+        {
+          heading: "Sustainability",
+          value: "Net Zero Target",
+          description: "Repurposing waste streams to reduce carbon footprints in commercial landscaping.",
+          tone: "light",
+        },
+      ],
+    },
   },
   "animal-feed": {
     badge: "Livestock Nutrition",
@@ -382,14 +411,17 @@ export default async function IndustryDetailPage({ params }: { params: { slug: s
   if (!industry) notFound();
 
   const content = industryContent[industry.slug];
-  const primaryCta = content?.relatedProductSlug
+  // When productBento renders the full product callout on this same page, keep the hero's
+  // default in-page anchor CTAs instead of sending visitors straight to the product page.
+  const primaryCta = content?.relatedProductSlug && !content.productBento
     ? { label: "View Product", href: `/products/${content.relatedProductSlug}` }
     : undefined;
 
   let productSpecRows: ProductSpecRow[] = [];
   let productTableRows: ProductSpecRow[] = [];
-  if ((content?.productSpecs || content?.productTable) && content.relatedProductSlug) {
-    const relatedProduct = await prisma.product.findUnique({ where: { slug: content.relatedProductSlug } });
+  let relatedProduct: Awaited<ReturnType<typeof prisma.product.findUnique>> = null;
+  if ((content?.productSpecs || content?.productTable || content?.productBento) && content.relatedProductSlug) {
+    relatedProduct = await prisma.product.findUnique({ where: { slug: content.relatedProductSlug } });
     const specifications = (relatedProduct?.specifications as ProductSpecifications) ?? {};
 
     if (content.productSpecs) {
@@ -418,6 +450,19 @@ export default async function IndustryDetailPage({ params }: { params: { slug: s
       {content?.pillars && <IndustryPillarsStrip pillars={content.pillars} />}
 
       {content?.benefits && <IndustryBenefits benefits={content.benefits} />}
+
+      {content?.productBento && relatedProduct && (
+        <IndustryProductBento
+          imageUrl={content.productBento.imageUrl}
+          imageAlt={content.productBento.imageAlt}
+          badgeLabel={relatedProduct.available ? content.productBento.availableBadgeLabel ?? "Available Now" : "Coming Soon"}
+          available={relatedProduct.available}
+          productName={relatedProduct.name}
+          description={relatedProduct.description}
+          checklist={content.productBento.checklist}
+          statCards={content.productBento.statCards}
+        />
+      )}
 
       {content?.showcase && <IndustryShowcase card={content.showcase.card} highlights={content.showcase.highlights} />}
 
