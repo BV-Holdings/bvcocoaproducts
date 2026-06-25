@@ -26,7 +26,9 @@ export async function sendTransactionalEmail({
   }
 
   return brevo.transactionalEmails.sendTransacEmail({
-    to: [{ email: to.email, name: to.name }],
+    // Brevo rejects the request outright if "name" is present but empty, so omit it entirely
+    // rather than send a blank string.
+    to: [{ email: to.email, ...(to.name ? { name: to.name } : {}) }],
     sender: {
       email: process.env.BREVO_FROM_EMAIL!,
       name: process.env.BREVO_FROM_NAME,

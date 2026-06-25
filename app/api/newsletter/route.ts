@@ -55,7 +55,7 @@ export async function POST(request: Request) {
         : undefined;
 
       await sendTransactionalEmail({
-        to: { email, name: name || "" },
+        to: { email, name },
         templateId,
         params: {
           NAME: name || "there",
