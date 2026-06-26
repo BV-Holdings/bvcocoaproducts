@@ -71,7 +71,18 @@ export function Footer() {
       </div>
 
       <div className="mx-auto max-w-container-max border-t border-warmCream/10 px-gutter py-lg text-center text-label-sm">
-        © {new Date().getFullYear()} BV Holdings. Sustainable Cocoa Excellence.
+        <p>© {new Date().getFullYear()} BV Holdings. Sustainable Cocoa Excellence.</p>
+        <p className="mt-xs text-warmCream/50">
+          Website designed and developed by{" "}
+          <a
+            href="https://gmaxdigitals.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-amber"
+          >
+            Gmax Digital
+          </a>
+        </p>
       </div>
     </footer>
   );
