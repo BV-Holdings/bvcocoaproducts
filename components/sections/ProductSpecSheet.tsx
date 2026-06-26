@@ -1,13 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Download, FileText, ShieldCheck } from "lucide-react";
+import { FileText, ShieldCheck } from "lucide-react";
+import { DownloadButton } from "@/components/ui/DownloadButton";
+import { DOCUMENTS, type DocumentKey } from "@/lib/documents";
 import type { ProductSpecifications } from "@/types";
 
 export interface ProductDocument {
+  documentKey: DocumentKey;
   label: string;
-  meta: string;
-  href: string;
 }
 
 export interface ProductSpecSheetProps {
@@ -29,10 +30,9 @@ const specLabels: Record<string, string> = {
   bulkDensity: "Bulk Density",
 };
 
-// TODO: wire up real document URLs (e.g. Supabase Storage) once spec sheets/COAs are available.
 const defaultDocuments: ProductDocument[] = [
-  { label: "Technical Data Sheet", meta: "PDF", href: "#" },
-  { label: "Sample COA", meta: "PDF", href: "#" },
+  { documentKey: "specSheet", label: "Technical Data Sheet" },
+  { documentKey: "coaTemplate", label: "Sample COA" },
 ];
 
 const documentIcons = [FileText, ShieldCheck];
@@ -59,21 +59,21 @@ export function ProductSpecSheet({
           <div className="space-y-base pt-md">
             {documents.map((doc, i) => {
               const Icon = documentIcons[i % documentIcons.length];
+              const documentEntry = DOCUMENTS[doc.documentKey];
               return (
-                <a
-                  key={doc.label}
-                  href={doc.href}
-                  className="ambient-shadow group flex items-center justify-between rounded-xl border border-transparent bg-warmCream p-md transition-all duration-200 hover:border-terracotta"
+                <div
+                  key={doc.documentKey}
+                  className="ambient-shadow flex items-center justify-between gap-md rounded-xl border border-transparent bg-warmCream p-md transition-all duration-200 hover:border-terracotta"
                 >
                   <div className="flex items-center gap-md">
                     <Icon className="h-5 w-5 text-terracotta" />
                     <div>
                       <p className="font-bold text-cocoaBrown">{doc.label}</p>
-                      <p className="text-label-sm text-charcoal/50">{doc.meta}</p>
+                      <p className="text-label-sm text-charcoal/50">{documentEntry.url ? "PDF" : "Coming Soon"}</p>
                     </div>
                   </div>
-                  <Download className="h-5 w-5 text-charcoal/40 transition-all group-hover:translate-x-1 group-hover:text-terracotta" />
-                </a>
+                  <DownloadButton documentKey={doc.documentKey} variant="ghost" label="Get PDF" />
+                </div>
               );
             })}
           </div>

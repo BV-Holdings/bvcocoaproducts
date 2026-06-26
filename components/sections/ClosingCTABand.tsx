@@ -8,6 +8,7 @@ export interface ClosingCTABandProps {
   body?: string;
   primaryCta?: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
+  tertiaryCta?: { label: string; href: string };
 }
 
 export function ClosingCTABand({
@@ -15,6 +16,7 @@ export function ClosingCTABand({
   body = "Contact our trade desk for volume quotes, technical specifications, or shipping timelines.",
   primaryCta = { label: "Request a Quote", href: "/contact" },
   secondaryCta = { label: "Download Spec Sheet", href: "/quality" },
+  tertiaryCta,
 }: ClosingCTABandProps) {
   return (
     <section className="relative overflow-hidden bg-charcoal py-xl text-center text-warmCream">
@@ -41,6 +43,14 @@ export function ClosingCTABand({
           >
             {secondaryCta.label}
           </Link>
+          {tertiaryCta && (
+            <Link
+              href={tertiaryCta.href}
+              className="rounded-lg bg-warmCream px-xl py-md text-label-sm font-label-sm text-cocoaBrown transition-all hover:bg-warmCream/90"
+            >
+              {tertiaryCta.label}
+            </Link>
+          )}
         </div>
       </motion.div>
     </section>

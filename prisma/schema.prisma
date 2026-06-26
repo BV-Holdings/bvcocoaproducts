@@ -38,6 +38,15 @@ model TrackingInquiry {
   message   String?
 }
 
+model DocumentDownload {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  documentKey  String
+  visitorEmail String?
+  userAgent    String?
+  country      String?
+}
+
 model NewsletterSubscriber {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
